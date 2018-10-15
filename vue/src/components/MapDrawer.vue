@@ -11,8 +11,8 @@
       q-item-separator
       q-list-header Settings
       q-item(v-for="(s,index) in settings" :key="'s'+index")
-        q-field(orientation="vertical" :label="s[2]"  )
-          q-input(v-model="s[0]" :suffix="s[3]")
+        q-field(orientation="vertical" :label="s[2]")
+          q-input.xxx(v-model="s[0]" :suffix="s[3]")
       q-item-separator
       q-list-header Type of products
       q-item(tag="label" v-for="(g,index) in goods" :key="'g'+index")
@@ -68,11 +68,15 @@ export default {
 }
 </script>
 
-<style scoped lang="stylus">
+<style  lang="stylus">
   .inputfield
     display flex
     flex-direction row
 
   .map-drawer
     color orange
+
+  .xxx .q-if-addon-right
+      margin-left  -150px !important
+
 </style>

@@ -4,6 +4,8 @@ import uuid
 from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 
+import model.map_data as mapdata
+
 DEBUG = True
 
 vue = os.path.join(os.path.dirname(os.path.abspath(__file__)), "vue", "dist")
@@ -15,9 +17,20 @@ CORS(app)
 
 app = Flask(__name__, static_folder="vue/dist", static_url_path='')
 
+
 @app.route('/')
 def root():
     return app.send_static_file('index.html')
+
+
+@app.route('/cities', methods=['GET'])
+def cities():
+    return jsonify(mapdata.cities)
+
+print(mapdata.edges)
+@app.route('/edges', methods=['GET'])
+def edges():
+    return jsonify(mapdata.edges)
 
 
 @app.route('/ping', methods=['GET'])
@@ -27,4 +40,3 @@ def ping_pong():
 
 if __name__ == '__main__':
     app.run()
-
