@@ -3,8 +3,13 @@ function coreFlow(cl) {
   return cl
 }
 
-//const url = "http://localhost:5000"
-const url = ""
+console.log(process.env)
+let url = ""
+if (process.env.NODE_ENV === "development") {
+  url = "http://localhost:5000"
+
+}
+
 const get = path =>
   new Promise(done => fetch(url + path).then(_ => _.json().then(done)))
 export const api = {
