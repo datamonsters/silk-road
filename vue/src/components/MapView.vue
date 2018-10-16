@@ -3,8 +3,8 @@
     <mapbox access-token="pk.eyJ1IjoidW5xbyIsImEiOiJjam4xOWF2am4zdXFsM3ZwbndiMG8xN2czIn0.NFCL-490i2MfWkmcG5xkWw"
         :map-options="{
   style: 'mapbox://styles/mapbox/satellite-v9',
-  center: [-77.035, 38.875],
-  zoom: 12,
+center: [88.486052, 37.830348],
+    zoom: 2
 }" :scale-control="{
   show: true,
   position: 'top-left'
@@ -24,38 +24,52 @@ export default {
   components: { mapbox: Mapbox },
   methods: {
     mapLoaded(map) {
-      // map.style.stylesheet.layers.forEach(function(layer) {
-      //   if (layer.type === "symbol" || layer.type === "line") {
-      //     map.removeLayer(layer.id)
-      //   }
-      // })
+      this.$f.geo.coordinates.on(coordinates => {
+        console.log({ coordinates })
+        var geojson = {
+          type: "FeatureCollection",
+          features: []
+        }
+        coordinates.forEach((c, i) => {
+          geojson.features.push({
+            type: "Feature",
+            properties: {},
+            geometry: {
+              coordinates: c,
+              type: "LineString"
+            }
+          })
+        })
+        map.addSource("line", {
+          type: "geojson",
+          lineMetrics: true,
+          data: geojson
+        })
 
-      // map.addLayer({
-      //   type: 'line',
-      //   source: 'line',
-      //   id: 'line',
-      //   paint: {
-      //     'line-color': 'red',
-      //     'line-width': 14,
-      //     // 'line-gradient' must be specified using an expression
-      //     // with the special 'line-progress' property
-      //     'line-gradient': [
-      //       'interpolate',
-      //       ['linear'],
-      //       ['line-progress'],
-      //       0, "blue",
-      //       0.1, "royalblue",
-      //       0.3, "cyan",
-      //       0.5, "lime",
-      //       0.7, "yellow",
-      //       1, "red"
-      //     ]
-      //   },
-      //   layout: {
-      //     'line-cap': 'round',
-      //     'line-join': 'round'
-      //   }
-      // });
+        // the layer must be of type 'line'
+        map.addLayer({
+          type: "line",
+          source: "line",
+          id: "line",
+          paint: {
+            "line-color": "red",
+            "line-width": 3,
+            // 'line-gradient' must be specified using an expression
+            // with the special 'line-progress' property
+            "line-gradient": [
+              "interpolate",
+              ["linear"],
+              ["line-progress"],
+              0,
+              "blue"
+            ]
+          },
+          layout: {
+            "line-cap": "round",
+            "line-join": "round"
+          }
+        })
+      })
     }
   }
 }

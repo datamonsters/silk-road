@@ -12,6 +12,9 @@ class Store {
     cities: A.f.stored,
     edges: A.f.stored
   }
+  geo = {
+    coordinates: A.f
+  }
 }
 
 export const af = new Avue(Store, actions)

@@ -1,10 +1,12 @@
 import { api } from "./api"
+import { geo } from "./geo"
 
-export const actions = (a, f) => {
+export const actions = () => {
   return {
     init() {
       return {}
     },
-    api
+    api,
+    geo
   }
 }

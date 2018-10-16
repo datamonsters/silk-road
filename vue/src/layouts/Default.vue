@@ -4,7 +4,7 @@
       q-toolbar(color="primary" :glossy="$q.theme === 'mat'" :inverted="$q.theme === 'ios'")
         q-btn(flat dense round aria-label="Menu" icon="mdi-menu")
         q-toolbar-title SilkRoad
-          .subtitle v{{ $q.version }}
+          <!--.subtitle v{{  }}-->
     q-layout-drawer(v-model="leftDrawerOpen" :content-class="$q.theme === 'mat' ? 'bg-grey-2' : null")
       map-drawer
     q-page-container
@@ -15,7 +15,7 @@
 import { openURL } from "quasar"
 import QToolbarTitle from "quasar-framework/src/components/toolbar/QToolbarTitle"
 import QCheckbox from "quasar-framework/src/components/checkbox/QCheckbox"
-import MapDrawer from "../components/MapDrawer"
+import MapDrawer from "../components/LeftDrawer"
 //import QBtn from "quasar-framework/src/components/btn/QBtn"
 
 export default {
