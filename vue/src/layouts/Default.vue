@@ -9,6 +9,13 @@
       map-drawer
     q-page-container
       router-view
+
+    q-page-sticky( position="left" :offset="[18, 18]")
+      q-btn(
+      round
+      color="primary"
+      icon="mdi-check"
+      )
 </template>
 
 <script>
@@ -16,10 +23,12 @@ import { openURL } from "quasar"
 import QToolbarTitle from "quasar-framework/src/components/toolbar/QToolbarTitle"
 import QCheckbox from "quasar-framework/src/components/checkbox/QCheckbox"
 import MapDrawer from "../components/LeftDrawer"
+import QBtn from "quasar-framework/src/components/btn/QBtn"
+import QPageSticky from "quasar-framework/src/components/layout/QPageSticky"
 
 export default {
   name: "LayoutDefault",
-  components: { MapDrawer, QCheckbox, QToolbarTitle },
+  components: { QPageSticky, QBtn, MapDrawer, QCheckbox, QToolbarTitle },
   data() {
     return {
       userOpen: undefined

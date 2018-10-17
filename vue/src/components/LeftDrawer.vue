@@ -2,25 +2,24 @@
   q-list(no-border link inset-delimiter)
     q-list(no-border link inset-delimiter)
       q-list-header Roads
-      div {{roads}}
+      div
       q-item(tag="label" v-for="road in roads" :key="road[1]")
         q-item-side
-          q-checkbox(v-model="road[0]")
+          q-checkbox(v-model="road[0]" @cha)
         q-item-main
           q-item-tile(label) {{road[2]}}
           q-item-tile(sublabel) {{road[3]}}
       q-item-separator
       q-list-header Settings
-      q-item(v-for="(s,index) in settings" :key="'s'+index")
+      q-item(v-for="(s,index) in vars" :key="'s'+index")
         q-field(orientation="vertical" :label="s[2]")
-          q-input.xxx(v-model="s[0]" :suffix="s[3]")
+          q-input.xxx(:placeholder="s[1]" v-model="s[0]" :suffix="s[3]")
       q-item-separator
       q-list-header Type of products
       q-item(tag="label" v-for="(g,index) in goods" :key="'g'+index" disabled)
         q-item-side
           q-checkbox(v-model="g[0]" disabled)
         q-item-main
-          //img(src="../assets/goodsicons/1.svg" height="20px")
           q-item-tile(label) {{g[1]}}
 
 </template>
@@ -37,23 +36,15 @@ export default {
   name: "map-drawer",
   components: { QField, QInput, QItem, QItemTile, QItemMain, QCheckbox },
   mapFlow: {
-    settings: ["roads"]
+    settings: ["roads", "vars"]
+  },
+  watch: {
+    roads(v) {
+      this.$a.launch("settings.change-roads", v)
+    }
   },
   data() {
     return {
-      //roads: [
-      //  [false, "silk", "New Silk Road", "High speed railway"],
-      //  [false, "mongolian", "Mongolian", "alternative silk way"],
-      //  [false, "trans_sib", "Trans-Siberian", "railway"],
-      //  [false, "northeast_passage", "Northeast passage", "Sea route"]
-      //],
-      settings: [
-        [1000, 0, "Container capacity", "kg"],
-        [1000, 0, "Railway traffic", "TEU per day"],
-        [1000, 0, "High-speed railway traffic", "TEU per day"],
-        [1000, 0, "Seaborne traffic", "TEU per day"],
-        [1000, 0, "Five Element", "TEU per day"]
-      ],
       goods: [
         [false, "Textiles and furniture"],
         [true, "Vegetables, foodstuffs and wood"],

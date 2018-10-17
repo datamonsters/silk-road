@@ -1,5 +1,6 @@
 import { api } from "./api"
 import { geo } from "./geo"
+import { settings } from "./settings"
 
 export const actions = () => {
   return {
@@ -7,6 +8,7 @@ export const actions = () => {
       return {}
     },
     api,
-    geo
+    geo,
+    settings
   }
 }
