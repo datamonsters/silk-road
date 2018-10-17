@@ -1,3 +1,20 @@
+import functools
+import time
+from timeit import timeit
+
+
+def timebenc(func):
+    @functools.wraps(func)
+    def newfunc(*args, **kwargs):
+        startTime = time.time()
+        func(*args, **kwargs)
+        elapsedTime = time.time() - startTime
+        print('function [{}] finished in {} ms'.format(
+            func.__name__, int(elapsedTime * 1000)))
+
+    return newfunc
+
+
 import pandas as pd
 import numpy as np
 import os
@@ -130,6 +147,7 @@ def Next_step(V, Q, P_, sr_on, changed, ts_on, np_on, mong_on):
     # return P_,JJ
 
 
+
 def PJ(V, Q, P, sr_on, changed, ts_on, np_on, mong_on):
     global matrix
     global k
@@ -158,7 +176,6 @@ def PJ(V, Q, P, sr_on, changed, ts_on, np_on, mong_on):
                 count = count + 1
 
     return P[:, -1, :], JJ
-
 
 # P, J = PJ(V, Q, P, Silk_roads_on, if_changed, Transsib_on, Northeast_passage_on, mongolian_on)
 

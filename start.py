@@ -1,10 +1,11 @@
 import binascii
 import os
 
+import model.map_data as mapdata
+import model.query as query
+
 from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
-
-import model.map_data as mapdata
 
 import argparse
 
@@ -34,6 +35,16 @@ hash_var = str(binascii.hexlify(os.urandom(16)))
 @app.route('/hash', methods=['GET'])
 def hash():
     return jsonify(hash_var)
+
+
+@app.route('/base', methods=['GET'])
+def base():
+    r = query.calc_road(query.roads)
+    return jsonify({
+        "traffic": r['j'],
+        "roads": query.roads,
+        "settings": query.settings,
+    })
 
 
 @app.route('/cities', methods=['GET'])

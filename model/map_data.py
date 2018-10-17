@@ -1,3 +1,5 @@
+import numpy
+
 import model.fn_matrix as f
 
 cities = []
@@ -12,5 +14,6 @@ for i in range(f.cities.shape[0]):
 
 edges = []
 for i in range(f.df_edges_list.shape[0]):
-    edge = [ int(f.df_edges_list.iloc[i, 7]), int(f.df_edges_list.iloc[i, 8])]
+    l = f.df_edges_list.iloc
+    edge = [int(l[i, 7]), int(l[i, 8]), int(l[i, 6])]
     edges.append(edge)

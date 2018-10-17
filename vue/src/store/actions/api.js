@@ -1,32 +1,26 @@
-function coreFlow(cl) {
-  cl.x = "wok"
-  return cl
-}
-
-console.log(process.env)
-let url = ""
-if (process.env.NODE_ENV === "development") {
-  url = "http://localhost:5000"
-
-}
-
-const get = path =>
+let url = process.env.NODE_ENV === "development" ? "http://localhost:5000" : ""
+const load = path =>
   new Promise(done => fetch(url + path).then(_ => _.json().then(done)))
+
 export const api = {
   async init() {
-    let hash = await get("/hash")
+    let hash = await load("/hash")
     let raw = this.f.raw
     if (raw.hash.v !== hash) {
       this.f.raw.hash(hash)
-      let r = await Promise.all([get("/cities"), get("/edges")])
+      let r = await Promise.all([
+        load("/cities"),
+        load("/edges"),
+        load("/base")
+      ])
       raw.cities(r[0])
       raw.edges(r[1])
+      raw.base(r[2])
+      console.log(r)
+
       this.a("geo.generate")
     } else {
       this.a("geo.generate")
     }
-  },
-  async getCites() {
-    return {}
   }
 }

@@ -15,7 +15,7 @@ center: [88.486052, 37.830348],
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import Mapbox from "mapbox-gl-vue"
 import "mapbox-gl"
 
@@ -24,51 +24,9 @@ export default {
   components: { mapbox: Mapbox },
   methods: {
     mapLoaded(map) {
-      this.$f.geo.coordinates.on(coordinates => {
-        console.log({ coordinates })
-        var geojson = {
-          type: "FeatureCollection",
-          features: []
-        }
-        coordinates.forEach((c, i) => {
-          geojson.features.push({
-            type: "Feature",
-            properties: {},
-            geometry: {
-              coordinates: c,
-              type: "LineString"
-            }
-          })
-        })
-        map.addSource("line", {
-          type: "geojson",
-          lineMetrics: true,
-          data: geojson
-        })
-
-        // the layer must be of type 'line'
-        map.addLayer({
-          type: "line",
-          source: "line",
-          id: "line",
-          paint: {
-            "line-color": "red",
-            "line-width": 3,
-            // 'line-gradient' must be specified using an expression
-            // with the special 'line-progress' property
-            "line-gradient": [
-              "interpolate",
-              ["linear"],
-              ["line-progress"],
-              0,
-              "blue"
-            ]
-          },
-          layout: {
-            "line-cap": "round",
-            "line-join": "round"
-          }
-        })
+      this.$f.geo.trafficLayer.on(layer => {
+        console.log(layer)
+        map.addLayer(layer)
       })
     }
   }

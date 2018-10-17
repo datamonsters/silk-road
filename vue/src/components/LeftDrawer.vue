@@ -2,6 +2,7 @@
   q-list(no-border link inset-delimiter)
     q-list(no-border link inset-delimiter)
       q-list-header Roads
+      div {{roads}}
       q-item(tag="label" v-for="road in roads" :key="road[1]")
         q-item-side
           q-checkbox(v-model="road[0]")
@@ -15,9 +16,9 @@
           q-input.xxx(v-model="s[0]" :suffix="s[3]")
       q-item-separator
       q-list-header Type of products
-      q-item(tag="label" v-for="(g,index) in goods" :key="'g'+index")
+      q-item(tag="label" v-for="(g,index) in goods" :key="'g'+index" disabled)
         q-item-side
-          q-checkbox(v-model="g[0]")
+          q-checkbox(v-model="g[0]" disabled)
         q-item-main
           //img(src="../assets/goodsicons/1.svg" height="20px")
           q-item-tile(label) {{g[1]}}
@@ -35,15 +36,17 @@ import QField from "quasar-framework/src/components/field/QField"
 export default {
   name: "map-drawer",
   components: { QField, QInput, QItem, QItemTile, QItemMain, QCheckbox },
+  mapFlow: {
+    settings: ["roads"]
+  },
   data() {
     return {
-      roads: [
-        [false, "silk", "New Silk Road", "High speed railway"],
-        [false, "mongolian", "Mongolian", "alternative silk way"],
-        [false, "trans_sib", "Trans-Siberian", "railway"],
-        [false, "northeast_passage", "Northeast passage", "Sea route"],
-        [false, "japan_korea", "Producers", "exc. Japan, Korea"]
-      ],
+      //roads: [
+      //  [false, "silk", "New Silk Road", "High speed railway"],
+      //  [false, "mongolian", "Mongolian", "alternative silk way"],
+      //  [false, "trans_sib", "Trans-Siberian", "railway"],
+      //  [false, "northeast_passage", "Northeast passage", "Sea route"]
+      //],
       settings: [
         [1000, 0, "Container capacity", "kg"],
         [1000, 0, "Railway traffic", "TEU per day"],
