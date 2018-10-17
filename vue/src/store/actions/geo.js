@@ -21,7 +21,6 @@ export const geo = {
       }
       let a = [a0, a1]
       coordinates.push(a)
-
       mapEdges[e[0] + "-" + e[1]] = a
       mapEdges[e[1] + "-" + e[0]] = a
     })
