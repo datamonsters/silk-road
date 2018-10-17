@@ -52,7 +52,6 @@ def traffic():
     })
 
 
-query.hash_query(query.roads)
 
 
 @app.route('/base', methods=['GET'])
@@ -81,8 +80,9 @@ def ping_pong():
     return jsonify('pong!')
 
 
+q = query.calc_traffic(query.hash_query(query.roads))
 if __name__ == '__main__':
     if DEBUG:
-        app.run(host='0.0.0.0', port=80)
+        app.run()
     else:
         app.run(host='0.0.0.0', port=80)
