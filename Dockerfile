@@ -7,6 +7,7 @@ WORKDIR /usr/src/app
 ADD . /usr/src/app/
 
 RUN pip install -r /usr/src/app/requirements.txt
+RUN pip install pandas
 
 EXPOSE 80
 
