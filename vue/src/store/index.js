@@ -8,10 +8,10 @@ const A = avuef.A
 
 class Store {
   raw = {
-    hash: A.f,
+    hash: A.f.stored,
     cities: A.f.stored,
     edges: A.f.stored,
-    base: A.f
+    base: A.f.stored
   }
   geo = {
     coordinates: A.f,
