@@ -1,17 +1,20 @@
 <template lang="pug">
   q-list(no-border link inset-delimiter)
-    q-list(no-border link inset-delimiter)
+    q-inner-loading(:visible="$a.during['api.get-traffic']")
+      div please wait {{$f.settings.maxDur.v}} seconds
+      q-spinner-gears(size="120px" color="primary")
+    q-list(no-border link inset-delimiter :disabled="$a.during['api.get-traffic']")
       q-list-header Roads
       div
       q-item(tag="label" v-for="road in roads" :key="road[1]")
         q-item-side
-          q-checkbox(v-model="road[0]" @cha)
+          q-checkbox(v-model="road[0]" :disable="$a.during['api.get-traffic']" )
         q-item-main
           q-item-tile(label) {{road[2]}}
           q-item-tile(sublabel) {{road[3]}}
       q-item-separator
       q-list-header Settings
-      q-item(v-for="(s,index) in vars" :key="'s'+index")
+      q-item(v-for="(s,index) in vars" :key="'s'+index" disabled)
         q-field(orientation="vertical" :label="s[2]")
           q-input.xxx(:placeholder="s[1]" v-model="s[0]" :suffix="s[3]")
       q-item-separator
@@ -31,10 +34,12 @@ import QItemTile from "quasar-framework/src/components/list/QItemTile"
 import QItem from "quasar-framework/src/components/list/QItem"
 import QInput from "quasar-framework/src/components/input/QInput"
 import QField from "quasar-framework/src/components/field/QField"
+import QInnerLoading from "quasar-framework/src/components/inner-loading/QInnerLoading"
+import QSpinnerGears from "quasar-framework/src/components/spinner/QSpinnerGears"
 
 export default {
   name: "map-drawer",
-  components: { QField, QInput, QItem, QItemTile, QItemMain, QCheckbox },
+  components: { QSpinnerGears, QInnerLoading, QField, QInput, QItem, QItemTile, QItemMain, QCheckbox },
   mapFlow: {
     settings: ["roads", "vars"]
   },

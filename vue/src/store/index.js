@@ -8,20 +8,24 @@ const A = avuef.A
 
 class Store {
   raw = {
-    hash: A.f.stored,
+    hash: A.f,
     cities: A.f.stored,
     edges: A.f.stored,
-    base: A.f.stored
+    base: A.f
   }
   geo = {
     coordinates: A.f,
     mapEdges: A.f,
-    trafficLayer: A.f
+    trafficFeatures: A.f
   }
   settings = {
     openDrawer: A.f.stored,
     roads: A.f,
-    vars: A.f
+    vars: A.f,
+
+    maxDur: A.f,
+    lastHash: A.f,
+    newHash: A.f,
   }
 }
 

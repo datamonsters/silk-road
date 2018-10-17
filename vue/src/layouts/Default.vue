@@ -10,12 +10,11 @@
     q-page-container
       router-view
 
-    q-page-sticky( position="left" :offset="[18, 18]")
-      q-btn(
-      round
-      color="primary"
-      icon="mdi-check"
-      )
+    q-page-sticky( v-if="apply" position="left" :offset="[18, 18]" )
+      q-btn( round color="primary" :disable="$a.during['api.get-traffic']"
+      @click="$a.launch('api.get-traffic')")
+        q-spinner-pie(v-if="$a.during['api.get-traffic']")
+        q-icon(v-else name="mdi-check")
 </template>
 
 <script>
@@ -25,16 +24,22 @@ import QCheckbox from "quasar-framework/src/components/checkbox/QCheckbox"
 import MapDrawer from "../components/LeftDrawer"
 import QBtn from "quasar-framework/src/components/btn/QBtn"
 import QPageSticky from "quasar-framework/src/components/layout/QPageSticky"
+import QSpinnerPie from "quasar-framework/src/components/spinner/QSpinnerPie"
+import QIcon from "quasar-framework/src/components/icon/QIcon"
 
 export default {
   name: "LayoutDefault",
-  components: { QPageSticky, QBtn, MapDrawer, QCheckbox, QToolbarTitle },
+  components: { QIcon, QSpinnerPie, QPageSticky, QBtn, MapDrawer, QCheckbox, QToolbarTitle },
   data() {
     return {
-      userOpen: undefined
+      userOpen: undefined,
+      apply: false
     }
   },
   onFlow: {
+    "settings.newHash"(v) {
+      this.apply = v !== this.$f.settings.lastHash.v
+    },
     "settings.openDrawer"(v) {
       this.userOpen = v
     }

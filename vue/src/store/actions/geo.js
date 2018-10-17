@@ -60,25 +60,6 @@ export const geo = {
         }
       })
     })
-
-    this.f.geo.trafficLayer({
-      id: "lines",
-      type: "line",
-      source: {
-        type: "geojson",
-        data: {
-          type: "FeatureCollection",
-          features
-        }
-      },
-      paint: {
-        "line-width": ["get", "width"],
-        "line-color": "red"
-      },
-      layout: {
-        "line-cap": "round",
-        "line-join": "round"
-      }
-    })
+    this.f.geo.trafficFeatures(features)
   }
 }

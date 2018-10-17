@@ -1,3 +1,5 @@
+import { load } from "./api"
+
 export const settings = {
   init(varsValues, roadsValues) {
     let roads = [
@@ -20,9 +22,13 @@ export const settings = {
       (a, i) => ((a[0] = Math.round(varsValues[i])), (a[1] = String(a[0])), a)
     )
     this.f.settings.vars(vars)
+    this.f.settings.roads(roads)
+    this.f.settings.lastHash(roads.map(a => a[0] ? 1 : 0).join(""))
   },
 
-  "change-roads"(v){
-    console.log(v)
+  "change-roads"(v) {
+    let hash = v.map(a => a[0] ? 1 : 0).join("")
+    //console.log(hash)
+    this.f.settings.newHash(hash)
   }
 }

@@ -24,9 +24,27 @@ export default {
   components: { mapbox: Mapbox },
   methods: {
     mapLoaded(map) {
-      this.$f.geo.trafficLayer.on(layer => {
-        console.log(layer)
-        map.addLayer(layer)
+      let geojson = {
+        type: "FeatureCollection",
+        features: []
+      }
+      map.addSource("traffic-source", { type: "geojson", data: geojson })
+      map.addLayer({
+        id: "traffic",
+        source: "traffic-source",
+        type: "line",
+        paint: {
+          "line-width": ["get", "width"],
+          "line-color": "red"
+        },
+        layout: {
+          "line-cap": "round",
+          "line-join": "round"
+        }
+      })
+      this.$f.geo.trafficFeatures.on(features => {
+        geojson.features = features
+        map.getSource("traffic-source").setData(geojson)
       })
     }
   }
