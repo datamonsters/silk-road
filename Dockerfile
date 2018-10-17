@@ -1,4 +1,4 @@
-FROM paulflorea/python3-uwsgi-scipy-numpy:alpine
+FROM tailordev/pandas
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
@@ -7,7 +7,7 @@ WORKDIR /usr/src/app
 ADD . /usr/src/app/
 
 RUN pip install -r /usr/src/app/requirements.txt
-RUN pip install pandas
+RUN pip install numpy
 
 EXPOSE 80
 

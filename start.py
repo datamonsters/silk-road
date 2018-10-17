@@ -52,6 +52,9 @@ def traffic():
     })
 
 
+query.hash_query(query.roads)
+
+
 @app.route('/base', methods=['GET'])
 def base():
     hash = query.hash_query(query.roads)
