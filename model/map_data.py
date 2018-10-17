@@ -1,5 +1,3 @@
-import numpy
-
 import model.fn_matrix as f
 
 cities = []

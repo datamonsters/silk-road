@@ -34,16 +34,32 @@ hash_var = str(binascii.hexlify(os.urandom(16)))
 
 @app.route('/hash', methods=['GET'])
 def hash():
-    return jsonify(hash_var)
+    return jsonify({
+        "hash": hash_var,
+        "dur": query.durations,
+    })
+
+
+@app.route('/traffic', methods=['GET'])
+def traffic():
+    hash = request.args.get('hash')
+    r = None
+    if hash:
+        r = query.calc_traffic(hash)
+
+    return jsonify({
+        "traffic": r['j'],
+    })
 
 
 @app.route('/base', methods=['GET'])
 def base():
-    r = query.calc_road(query.roads)
+    hash = query.hash_query(query.roads)
+    r = query.calc_traffic(hash)
     return jsonify({
         "traffic": r['j'],
         "roads": query.roads,
-        "settings": query.settings,
+        "settings": query.settings
     })
 
 
@@ -64,6 +80,6 @@ def ping_pong():
 
 if __name__ == '__main__':
     if DEBUG:
-        app.run()
+        app.run(host='0.0.0.0', port=80)
     else:
         app.run(host='0.0.0.0', port=80)

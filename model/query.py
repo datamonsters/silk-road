@@ -1,11 +1,13 @@
 # start roads
 import os
 import pickle
+import time
+import timeit
 
 roads = {
-    "silk": True,
+    "silk": False,
     "mongolian": False,
-    "trans_sib": False,
+    "trans_sib": True,
     "northeast_passage": False
     # "japan_korea": False,
 }
@@ -19,6 +21,8 @@ settings = [
     1448.785163
 ]
 
+durations = []
+
 from pandas import json, np
 import model.fn_matrix as f
 
@@ -29,30 +33,42 @@ def norma(a):
     return [int(a[0]), int(a[1]), a[2] * 10000000]
 
 
-def calc_road(r):
-    hash = hash_query(r)
+def calc_traffic(hash):
     if hash in cache:
+        print("from cache", hash)
         return load_obj(hash)
     else:
+        print("no hash in cache", hash)
+        r = un_hash_query(hash)
         f.V = np.array(f.df_V)
-        print("calc road")
-        # xx = list(map(norma, [[23.3, 33.0, 3], [23.3, 33.0, 4]]))
-        # print(xx)
-        p, j = f.PJ(f.V, f.Q, f.P, r['silk'], True, r['trans_sib'], r['northeast_passage'], r['mongolian'])
+        start = time.time()
 
+        p, j = f.PJ(f.V, f.Q, f.P, r['silk'], True, r['trans_sib'], r['northeast_passage'], r['mongolian'])
+        aj = list(map(norma, j.tolist()))
         obj = {
             "p": p.tolist(),
-            "j": list(map(norma, j.tolist()))
+            "j": aj
         }
+        durations.append(time.time() - start)
+
         save_obj(obj, hash)
         return obj
-
 
 def z(v):
     if v:
         return "1"
     else:
         return "0"
+
+
+def un_hash_query(r):
+    a = list(r)
+    return {
+        'silk': bool(int(a[0])),
+        'mongolian': bool(int(a[1])),
+        'trans_sib': bool(int(a[2])),
+        'northeast_passage': bool(int(a[3])),
+    }
 
 
 def hash_query(r):
@@ -62,6 +78,7 @@ def hash_query(r):
 
 
 def save_obj(obj, name):
+    cache[name] = True
     with open('cache/' + name, 'wb') as f:
         pickle.dump(obj, f, pickle.HIGHEST_PROTOCOL)
 
@@ -75,4 +92,3 @@ for dirname, dirnames, filenames in os.walk('cache'):
     for filename in filenames:
         if filename != ".gitignore":
             cache[filename] = True
-

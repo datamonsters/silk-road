@@ -12,4 +12,4 @@ EXPOSE 80
 
 ENTRYPOINT ["python"]
 
-CMD ["app.py", "prod"]
+CMD ["start.py"]
