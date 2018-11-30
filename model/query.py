@@ -13,13 +13,20 @@ roads = {
 }
 
 # start Q settings
-settings = [
+capacity = [
     23.2328528,
     355.1496702,
     4346.355488,
     61369.86301,
     1448.785163
 ]
+# settings = [
+#     1,
+#     1,
+#     1,
+#     1,
+#     1
+# ]
 
 durations = []
 
@@ -40,9 +47,9 @@ def calc_traffic(hash):
     else:
         print("no hash in cache", hash)
         r = un_hash_query(hash)
-        f.V = np.array(f.df_V)
+        f.V = np.array(r["cap"])
+        # f.V = settings
         start = time.time()
-
         p, j = f.PJ(f.V, f.Q, f.P, r['silk'], True, r['trans_sib'], r['northeast_passage'], r['mongolian'])
         aj = list(map(norma, j.tolist()))
         obj = {
@@ -62,8 +69,11 @@ def z(v):
 
 
 def un_hash_query(r):
-    a = list(r)
+    h = r.split("-")
+    a = list(h[0])
+    q = h[1].split("_")
     return {
+        "cap": list(map(int, q)),
         'silk': bool(int(a[0])),
         'mongolian': bool(int(a[1])),
         'trans_sib': bool(int(a[2])),
@@ -71,10 +81,10 @@ def un_hash_query(r):
     }
 
 
-def hash_query(r):
-    ar = (z(r['silk']), z(r['trans_sib']), z(r['northeast_passage']), z(r['mongolian']))
-    s = "".join(ar)
-    return s
+# def hash_query(r):
+#     ar = (z(r['silk']), z(r['trans_sib']), z(r['northeast_passage']), z(r['mongolian']))
+#     s = "".join(ar)
+#     return s
 
 
 def save_obj(obj, name):

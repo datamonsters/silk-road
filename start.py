@@ -29,19 +29,21 @@ def root():
     return app.send_static_file('index.html')
 
 
-hash_var = str(binascii.hexlify(os.urandom(16)))
+sync_stamp = str(binascii.hexlify(os.urandom(16)))
 
+hash = '1000-23_355_4346_61370_1449'
 
-@app.route('/hash', methods=['GET'])
-def hash():
+@app.route('/sync', methods=['GET'])
+def sync():
     return jsonify({
-        "hash": hash_var,
+        "syncStamp": sync_stamp,
         "dur": query.durations,
+        "hash": hash
     })
-
 
 @app.route('/traffic', methods=['GET'])
 def traffic():
+    global hash
     hash = request.args.get('hash')
     r = None
     if hash:
@@ -53,26 +55,15 @@ def traffic():
 
 
 
-
-@app.route('/base', methods=['GET'])
-def base():
-    hash = query.hash_query(query.roads)
-    r = query.calc_traffic(hash)
+@app.route('/graph', methods=['GET'])
+def graph():
     return jsonify({
-        "traffic": r['j'],
-        "roads": query.roads,
-        "settings": query.settings
+        "cities": mapdata.cities,
+        "edges": mapdata.edges,
+        # "capacity": query.capacity,
+        # "roads": query.roads,
     })
 
-
-@app.route('/cities', methods=['GET'])
-def cities():
-    return jsonify(mapdata.cities)
-
-
-@app.route('/edges', methods=['GET'])
-def edges():
-    return jsonify(mapdata.edges)
 
 
 @app.route('/ping', methods=['GET'])
@@ -80,7 +71,7 @@ def ping_pong():
     return jsonify('pong!')
 
 
-q = query.calc_traffic(query.hash_query(query.roads))
+q = query.calc_traffic(hash)
 if __name__ == '__main__':
     if DEBUG:
         app.run()

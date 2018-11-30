@@ -35,7 +35,7 @@ import QItem from "quasar-framework/src/components/list/QItem"
 import QInput from "quasar-framework/src/components/input/QInput"
 import QField from "quasar-framework/src/components/field/QField"
 import QInnerLoading from "quasar-framework/src/components/inner-loading/QInnerLoading"
-import QSpinnerGears from "quasar-framework/src/components/spinner/QSpinnerGears"
+import QSpinnerGears from "quasar-framework/src/components/spinner/QSpinnerGears"cd
 
 export default {
   name: "map-drawer",
