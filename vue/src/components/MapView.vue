@@ -1,54 +1,61 @@
 <template>
   <div class="maparea" id="map">
-    <mapbox access-token="pk.eyJ1IjoidW5xbyIsImEiOiJjam4xOWF2am4zdXFsM3ZwbndiMG8xN2czIn0.NFCL-490i2MfWkmcG5xkWw"
-        :map-options="{
-  style: 'mapbox://styles/mapbox/satellite-v9',
-center: [88.486052, 37.830348],
-    zoom: 2
-}" :scale-control="{
-  show: true,
-  position: 'top-left'
-}" :fullscreen-control="{
-  show: true,
-  position: 'top-left'
-}" @map-load="mapLoaded"></mapbox>
+    <mapbox :fullscreen-control="fullscreenControl" :map-options="mapOptions" :scale-control="scaleControl"
+        @map-load="mapLoaded"
+        access-token="pk.eyJ1IjoidW5xbyIsImEiOiJjam4xOWF2am4zdXFsM3ZwbndiMG8xN2czIn0.NFCL-490i2MfWkmcG5xkWw"></mapbox>
   </div>
 </template>
 
 <script>
-import Mapbox from "mapbox-gl-vue"
-import "mapbox-gl"
+  import Mapbox from "mapbox-gl-vue"
+  import "mapbox-gl"
 
-export default {
-  name: "map-view",
-  components: { mapbox: Mapbox },
-  methods: {
-    mapLoaded(map) {
-      let geojson = {
-        type: "FeatureCollection",
-        features: []
+  export default {
+    name: "map-view",
+    components: { mapbox: Mapbox },
+    data: () => ({
+      fullscreenControl: {
+        show: true,
+        position: "top-left"
+      },
+      mapOptions: {
+        style: "mapbox://styles/mapbox/satellite-v9",
+        center: [88.486052, 37.830348],
+        zoom: 2
+      },
+      scaleControl: {
+        show: true,
+        position: "top-left"
       }
-      map.addSource("traffic-source", { type: "geojson", data: geojson })
-      map.addLayer({
-        id: "traffic",
-        source: "traffic-source",
-        type: "line",
-        paint: {
-          "line-width": ["get", "width"],
-          "line-color": "red"
-        },
-        layout: {
-          "line-cap": "round",
-          "line-join": "round"
+    }),
+    methods: {
+      mapLoaded(map) {
+        let geojson = {
+          type: "FeatureCollection",
+          features: []
         }
-      })
-      this.$f.geo.trafficFeatures.on(features => {
-        geojson.features = features
-        map.getSource("traffic-source").setData(geojson)
-      })
+        map.addSource("traffic-source", { type: "geojson", data: geojson })
+        map.addLayer({
+          id: "traffic",
+          source: "traffic-source",
+          type: "line",
+          paint: {
+            "line-width": ["get", "width"],
+            "line-color": "red"
+          },
+          layout: {
+            "line-cap": "round",
+            "line-join": "round"
+          }
+        })
+        this.$f.geo.onMapFeatures.on(features => {
+
+          geojson.features = features
+          map.getSource("traffic-source").setData(geojson)
+        })
+      }
     }
   }
-}
 </script>
 
 <style scoped lang="stylus">

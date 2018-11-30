@@ -1,25 +1,25 @@
 <template lang="pug">
   q-list(no-border link inset-delimiter)
-    q-inner-loading(:visible="$a.during['api.get-traffic']")
-      div please wait {{$f.settings.maxDur.v}} seconds
-      q-spinner-gears(size="120px" color="primary")
-    q-list(no-border link inset-delimiter :disabled="$a.during['api.get-traffic']")
+    q-inner-loading(:visible="$g.during['api.getTraffic']")
+      div please wait {{$f.vars.processDuration.v}} seconds
+      q-spinner-gears(size="120px" color="primary" )
+    q-list(no-border link inset-delimiter :disabled="$g.during['api.getTraffic']")
       q-list-header Roads
       div
       q-item(tag="label" v-for="road in roads" :key="road[1]")
         q-item-side
-          q-checkbox(v-model="road[0]" :disable="$a.during['api.get-traffic']" )
+          q-checkbox(v-model="road[0]" :disable="$g.during['api.getTraffic']" )
         q-item-main
           q-item-tile(label) {{road[2]}}
           q-item-tile(sublabel) {{road[3]}}
       q-item-separator
       q-list-header Settings
-      q-item(v-for="(s,index) in vars" :key="'s'+index" disabled)
-        q-field(orientation="vertical" :label="s[2]")
-          q-input.xxx(:placeholder="s[1]" v-model="s[0]" :suffix="s[3]")
+      q-item(v-for="(s,index) in capacity" :key="'s'+s[2]+s[4]"  )
+        q-field(orientation="vertical" :label="s[2]" @click="resetCap()")
+          q-input.xxx(v-model="s[0]" :suffix="s[3]" :error="s[4]" clearable :clear-value="s[1]")
       q-item-separator
-      q-list-header Type of products
-      q-item(tag="label" v-for="(g,index) in goods" :key="'g'+index" disabled)
+      //q-list-header Type of products
+      //q-item(tag="label" v-for="(g,index) in goods" :key="'g'+index" disabled)
         q-item-side
           q-checkbox(v-model="g[0]" disabled)
         q-item-main
@@ -41,11 +41,35 @@ export default {
   name: "map-drawer",
   components: { QSpinnerGears, QInnerLoading, QField, QInput, QItem, QItemTile, QItemMain, QCheckbox },
   mapFlow: {
-    settings: ["roads", "vars"]
+    vars: ["roads", "capacity"]
+  },
+  methods:{
+    resetCap(){
+      console.log("rest")
+
+    }
   },
   watch: {
     roads(v) {
-      this.$a.launch("settings.change-roads", v)
+      this.$f.vars.roadHashPart(v.map(a => a[0] ? 1 : 0).join(""))
+    },
+    capacity(v) {
+      let hash = v.map(a => {
+        let vv = parseInt(a[0])
+        if (!vv){
+          a[4] = true
+          a[0] = 1
+          setTimeout(()=>{
+            a[4] = false
+            this.$forceUpdate()
+          },700)
+          console.log(a)
+          return 0
+        } else {
+          return vv
+        }
+      }).join("_")
+      this.$f.vars.capacityHashPart(hash)
     }
   },
   data() {

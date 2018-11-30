@@ -1,15 +1,17 @@
+
 export const geo = {
-  generate() {
-    let c = this.f.raw.cities.v
+  initGraph() {
+    let rawGraph = this.f.raw.graph.v
+    let c = rawGraph.cities
     let coordinates = []
     let getA = i => {
       let city = c[i]
       return [city.lat, city.lon]
     }
 
-    let mapEdges = {}
 
-    this.f.raw.edges.v.forEach(e => {
+    let mapEdges = {}
+    rawGraph.edges.forEach(e => {
       let a0 = getA(e[0])
       let a1 = getA(e[1])
       if (Math.abs(a0[0] - a1[0]) > 180) {
@@ -24,15 +26,19 @@ export const geo = {
       mapEdges[e[0] + "-" + e[1]] = a
       mapEdges[e[1] + "-" + e[0]] = a
     })
-    this.f.geo.coordinates(coordinates)
-    this.f.geo.mapEdges(mapEdges)
-    let base = this.f.raw.base.v
-    this.a("geo.draw", base.traffic)
-    this.a("settings.init", base.settings, base.roads)
+
+
+    return {
+      coordinates,
+      mapEdges
+    }
+    //this.f.geo.coordinates(coordinates)
+    //this.f.geo.mapEdges(mapEdges)
+
   },
 
   draw(traffic) {
-    let mapEdges = this.f.geo.mapEdges.v
+    let mapEdges = this.f.geo.graph.v.mapEdges
     let tmap = {}
     let maxT = 0
 
@@ -59,6 +65,6 @@ export const geo = {
         }
       })
     })
-    this.f.geo.trafficFeatures(features)
+    this.f.geo.onMapFeatures(features)
   }
 }

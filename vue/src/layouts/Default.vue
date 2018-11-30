@@ -2,7 +2,7 @@
   q-layout(view="lHh Lpr lFf")
     q-layout-header
       q-toolbar(color="primary" :glossy="$q.theme === 'mat'" :inverted="$q.theme === 'ios'")
-        q-btn(flat dense round aria-label="Menu" icon="mdi-menu" @click="$f.settings.openDrawer(!leftDrawerOpen)")
+        q-btn(flat dense round aria-label="Menu" icon="mdi-menu" @click="$f.vars.openDrawer(!leftDrawerOpen)")
         q-toolbar-title SilkRoad
           <!--.subtitle v{{  }}-->
     q-layout-drawer(v-model="leftDrawerOpen" :content-class="$q.theme === 'mat' ? 'bg-grey-2' : null")
@@ -11,9 +11,9 @@
       router-view
 
     q-page-sticky( v-if="apply" position="left" :offset="[18, 18]" )
-      q-btn( round color="primary" :disable="$a.during['api.get-traffic']"
-      @click="$a.launch('api.get-traffic')")
-        q-spinner-pie(v-if="$a.during['api.get-traffic']")
+      q-btn( round color="primary" :disable="$g.during['api.getTraffic']"
+      @click="$a('api.getTraffic', $f.vars.userHash.v)")
+        q-spinner-pie(v-if="$g.during['api.getTraffic']")
         q-icon(v-else name="mdi-check")
 </template>
 
@@ -37,10 +37,11 @@ export default {
     }
   },
   onFlow: {
-    "settings.newHash"(v) {
-      this.apply = v !== this.$f.settings.lastHash.v
+    "vars.userHash"(v) {
+      //console.log(">",v)
+      this.apply = !!v
     },
-    "settings.openDrawer"(v) {
+    "vars.openDrawer"(v) {
       this.userOpen = v
     }
   },
@@ -54,7 +55,7 @@ export default {
         }
       },
       set(v) {
-        this.$f.settings.openDrawer(v)
+        this.$f.vars.openDrawer(v)
       }
     }
   },

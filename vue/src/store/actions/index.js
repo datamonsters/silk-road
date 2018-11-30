@@ -1,14 +1,11 @@
 import { api } from "./api"
 import { geo } from "./geo"
-import { settings } from "./settings"
+import { vars } from "./vars"
+import { traffic } from "./traffic"
 
-export const actions = () => {
-  return {
-    init() {
-      return {}
-    },
+export const actions = {
     api,
     geo,
-    settings
-  }
+    vars,
+    traffic
 }
