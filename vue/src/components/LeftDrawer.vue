@@ -28,14 +28,14 @@
 </template>
 
 <script>
-import QCheckbox from "quasar-framework/src/components/checkbox/QCheckbox"
+import updnQCheckbox from "quasar-framework/src/components/checkbox/QCheckbox"
 import QItemMain from "quasar-framework/src/components/list/QItemMain"
 import QItemTile from "quasar-framework/src/components/list/QItemTile"
 import QItem from "quasar-framework/src/components/list/QItem"
 import QInput from "quasar-framework/src/components/input/QInput"
 import QField from "quasar-framework/src/components/field/QField"
 import QInnerLoading from "quasar-framework/src/components/inner-loading/QInnerLoading"
-import QSpinnerGears from "quasar-framework/src/components/spinner/QSpinnerGears"cd
+import QSpinnerGears from "quasar-framework/src/components/spinner/QSpinnerGears"
 
 export default {
   name: "map-drawer",
